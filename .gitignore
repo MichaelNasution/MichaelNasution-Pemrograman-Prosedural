@@ -1,0 +1,33 @@
+# Compiled binaries
+*.o
+*.a
+*.so
+*.out
+
+# Executable files (compiled C programs)
+t01_01
+t01_02
+t01_03
+t02_01
+t02_02
+t03_01
+t03_02
+t03_03
+t04_01
+t04_02
+t05_01
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build directories
+build/
+dist/

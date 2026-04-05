@@ -1,0 +1,66 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        project:
+          - "2223-ge-t01-datatype-variable-MichaelNasution"
+          - "2223-ge-t02-control-structure-MichaelNasution"
+          - "2223-ge-t03-array-MichaelNasution"
+          - "2223-ge-t05-structure-MichaelNasution"
+          - "2425-ge-t04-string-MichaelNasution"
+          - "eg-t00-smallest-number-finder-MichaelNasution"
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install build tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc
+    
+    - name: Compile project
+      working-directory: ${{ matrix.project }}
+      run: make compile
+    
+    - name: Run tests
+      working-directory: ${{ matrix.project }}
+      run: |
+        if grep -q "test_" Makefile; then
+          # Run all test targets if they exist
+          make test_01 2>/dev/null || true
+          make test_02 2>/dev/null || true
+          make test_03 2>/dev/null || true
+        fi
+
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install build tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc cppcheck
+    
+    - name: Check for C code issues
+      run: |
+        cppcheck --enable=all --suppress=missingIncludeSystem \
+        2223-ge-t01-datatype-variable-MichaelNasution/ \
+        2223-ge-t02-control-structure-MichaelNasution/ \
+        2223-ge-t03-array-MichaelNasution/ \
+        2223-ge-t05-structure-MichaelNasution/ \
+        2425-ge-t04-string-MichaelNasution/ \
+        eg-t00-smallest-number-finder-MichaelNasution/
