@@ -1,0 +1,3 @@
+- memperbaiki parameter -> pointer
+
+-
